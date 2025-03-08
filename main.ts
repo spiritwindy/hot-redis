@@ -1,5 +1,4 @@
-import IORedis from 'ioredis';
-new IORedis();
+import type IORedis from 'ioredis';
 import { LRUCache as LRU } from 'lru-cache';
 
 type RedisCommand = (...args: any[]) => Promise<any>;
@@ -19,7 +18,7 @@ const DEFAULT_CONFIG: HotKeyConfig = {
   maxKeys: 1000         // 最大缓存键数量
 };
 
-class HotKeyCache {
+export class HotKeyCache {
   private readonly redis: IORedis;
   private readonly config: HotKeyConfig;
   private readonly accessCount = new Map<string, number>();
@@ -217,45 +216,3 @@ class HotKeyCache {
   }
 }
 
-// 使用示例
-const redis = new IORedis({
-  host: 'localhost',
-  port: 6379
-});
-
-// 使用示例
-const redis1 = new IORedis({
-  host: 'localhost',
-  port: 6379
-});
-const hotKeyCache = new HotKeyCache(redis, {
-  threshold: -1,
-  localTTL: 50000,
-});
-
-// 正常使用Redis API
-async function demo() {
-  await redis.set('user:1001', 'Alice');
-  const data = await redis.get('user:1001');
-  await redis.expire('user:1001', 30000);
-
-  await redis1.set('user:1002', 'test');
-  await redis.get("user:1002")
-  await redis.set('user:1002', 'Bob');
-  setTimeout(async () => {
-    console.log("已经设置为test")
-    await redis1.set('user:1002', 'test');
-    setTimeout(async () => { 
-      process.exit()
-    },100)
-  }, 4000);
-  setTimeout(async () => {
-    setInterval(async () => {
-        var d = await redis.get("user:1002")
-        console.log(d)
-    },500);
-  }, 2000)
-
-  // await redis.del('user:1001');
-}
-demo();
