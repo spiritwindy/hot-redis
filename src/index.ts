@@ -3,6 +3,7 @@ import { LRUCache as LRU } from 'lru-cache';
 
 type RedisCommand = (...args: any[]) => Promise<any>;
 type CommandParser = (args: any[]) => string[];
+type Mth = 'set' | 'del' | 'hset' | 'hdel' | 'expire' | 'pexpire' | 'expireat' | 'pexpireat' | 'persist' | 'mset' | 'incr' | 'decr' | 'get';
 
 interface HotKeyConfig {
   threshold: number;
@@ -62,9 +63,9 @@ export class HotKeyCache {
       'expireat', 'pexpireat', 'persist', 'mset', 'incr', 'decr'
     ]);
   }
-
-  private patchReadCommand(command: string) {
-    const original = this.redis[command].bind(this.redis);
+  // 
+  private patchReadCommand(command: 'set' | 'del' | 'hset' | 'hdel' | 'expire' | 'pexpire' | 'expireat' | 'pexpireat' | 'persist' | 'mset' | 'incr' | 'decr' | 'get') {
+    const original: any = this.redis[command].bind(this.redis);
 
     this.redis[command] = async (...args: any[]) => {
       const keys = this.parseKeys(command, args);
@@ -118,9 +119,9 @@ export class HotKeyCache {
     return promise;
   }
 
-  private patchWriteCommands(commands: string[]) {
+  private patchWriteCommands(commands: Mth[]) {
     commands.forEach(command => {
-      const original = this.redis[command].bind(this.redis);
+      const original: any = this.redis[command].bind(this.redis);
 
       this.redis[command] = async (...args: any[]) => {
         const result = await original(...args);

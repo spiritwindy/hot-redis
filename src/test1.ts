@@ -1,6 +1,6 @@
 // 使用示例
 import IORedis from 'ioredis';
-import { HotKeyCache } from './main.ts';
+import { HotKeyCache } from './index.js';
 const redis = new IORedis({
     host: 'localhost',
     port: 6379
