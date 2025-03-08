@@ -1,6 +1,6 @@
 {
   "name": "hot-redis",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,6 +15,11 @@
     "ioredis": "^5.6.0",
     "lru-cache": "^11.0.2"
   },
+  "repository": {
+    "url": "https://github.com/spiritwindy/hot-redis",
+    "type": "git"
+  },
+  "keywords": ["reids+member", "redis", "hot-redis"],
   "devDependencies": {
     "@types/assert": "^1.5.11",
     "@types/node": "^22.13.9"

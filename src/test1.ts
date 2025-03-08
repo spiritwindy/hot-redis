@@ -1,6 +1,6 @@
 // 使用示例
 import IORedis from 'ioredis';
-import { HotKeyCache } from './index.js';
+import { HotKeyCache } from '.';
 const redis = new IORedis({
     host: 'localhost',
     port: 6379
@@ -28,9 +28,9 @@ async function demo() {
     setTimeout(async () => {
         console.log("已经设置为test")
         await redis1.set('user:1002', 'test');
-        setTimeout(async () => {
-            process.exit()
-        }, 100)
+        // setTimeout(async () => {
+        //     process.exit()
+        // }, 100)
     }, 4000);
     setTimeout(async () => {
         setInterval(async () => {
